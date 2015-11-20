@@ -24,5 +24,8 @@ func TestApplyBonus (t *testing.T) {
 	if (sum + 1) != res.Sum {
 		t.Errorf("Error with bonus")
 	}
+	if (res.Bonus != 1) {
+		t.Errorf("Error with stored bonus")
+	}
 }
 
