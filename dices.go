@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	readline "gopkg.in/readline.v1"
 
 	dice "github.com/keltia/dices-go/dice"
-	"fmt"
 )
 
 func main() {
