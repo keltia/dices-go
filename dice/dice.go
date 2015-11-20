@@ -11,12 +11,9 @@ package dice
 
 import (
 	"math/rand"
-	"fmt"
 	"strings"
 	"strconv"
-	"errors"
 	"os"
-	"log"
 )
 
 const (
