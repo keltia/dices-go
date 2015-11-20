@@ -48,7 +48,7 @@ func checkBonus(sRoll string) (int, string) {
 		if parts[1] != "" {
 			var err error
 
-			bonus64, err := strconv.ParseInt(parts[1], 10, 32)
+			bonus64, err := strconv.ParseInt(parts[1], 10, 64)
 			if err != nil {
 				bonus = 0
 			} else {
