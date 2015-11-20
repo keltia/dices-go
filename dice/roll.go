@@ -15,6 +15,7 @@ import (
 type Roll struct {
 	Result []int
 	Sum    int
+	Bonus  int
 }
 
 // Parse a string representing a series of rolls incl. bonus
@@ -71,5 +72,6 @@ func (r *Roll) PrintDices() string {
 
 // Apply a bonus
 func (r *Roll) ApplyBonus(bonus int) {
+	r.Bonus = bonus
 	r.Sum += bonus
 }
