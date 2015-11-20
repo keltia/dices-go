@@ -1,12 +1,12 @@
 package main
 
 import (
-	dices "github.com/keltia/dices/dice"
+	dice "github.com/keltia/dices-go/dice"
 	"fmt"
 )
 
 func main() {
-	res, err := dices.ParseRoll("3D6")
+	res, err := dice.ParseRoll("3D6")
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
