@@ -38,8 +38,8 @@ func ParseRoll (rollStr string) (*Roll, error) {
 	)
 
 	if len(numSize) == 2 {
-		diceSize64, _ = strconv.ParseInt(numSize[1], 10, 32)
-		numRoll64, _ = strconv.ParseInt(numSize[0], 10, 32)
+		diceSize64, _ = strconv.ParseInt(numSize[1], 10, 64)
+		numRoll64, _ = strconv.ParseInt(numSize[0], 10, 64)
 		if numRoll64 == 0 {
 			numRoll64 = 1
 		}
