@@ -33,17 +33,17 @@ func ParseRoll (rollStr string) (*Roll, error) {
 
 	var (
 		diceSize64 int64
-		numRoll64  int64
+		numRoll64 int64
 	)
 
-	if len(numSize) == 1 {
-		diceSize64, _ = strconv.ParseInt(numSize[0], 10, 32)
-		if diceSize64 == 0 {
-			diceSize64 = 1
-		}
-	} else if len(numSize) == 2 {
+	if len(numSize) == 2 {
 		diceSize64, _ = strconv.ParseInt(numSize[1], 10, 32)
 		numRoll64, _ = strconv.ParseInt(numSize[0], 10, 32)
+		if numRoll64 == 0 {
+			numRoll64 = 1
+		}
+	} else {
+			return nil, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
 	}
 
 	d := NewDice(int(diceSize64))
