@@ -7,13 +7,13 @@ func TestParseRoll (t *testing.T) {
 	str := "D20"
 	res, err := ParseRoll(str)
 	if len(res.Result) != 1 || (res.Sum < 1 || res.Sum > 20) {
-		t.Errorf("%v: %d (%d)", err, len(res.Result), res.Sum)
+		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.Result), res.Sum)
 	}
 
 	str = "d20"
 	res, err = ParseRoll(str)
 	if len(res.Result) != 1 || (res.Sum < 1 || res.Sum > 20) {
-		t.Errorf("%v: %d (%d)", err, len(res.Result), res.Sum)
+		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.Result), res.Sum)
 	}
 
 	str = "3d4"
