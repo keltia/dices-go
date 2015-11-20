@@ -52,7 +52,7 @@ func ParseRoll (rollStr string) (*Roll, error) {
 	r := d.Roll(int(numRoll64))
 	r.ApplyBonus(bonus)
 
-	return d, nil
+	return r, nil
 }
 
 // Roll dice(s)
