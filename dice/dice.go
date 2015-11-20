@@ -55,11 +55,10 @@ func checkBonus(sRoll string) (int, string) {
 				bonus = int(bonus64)
 			}
 		}
-		diceStr = parts[0]
 	} else {
-		diceStr = parts[0]
 		bonus = 0
 	}
+	diceStr = parts[0]
 	return bonus, diceStr
 }
 
