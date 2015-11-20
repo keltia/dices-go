@@ -18,6 +18,12 @@ func TestParseRoll (t *testing.T) {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.Result), res.Sum)
 	}
 
+	str = "D2"
+	res, err = ParseRoll(str)
+	if err == nil {
+		t.Errorf("Bad size(%s): %v: %d (%d)", str, err, len(res.Result), res.Sum)
+	}
+
 	str = "3d4"
 	res, err = ParseRoll(str)
 	if len(res.Result) != 3 || (res.Sum < 3 || res.Sum > 12) {
