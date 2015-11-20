@@ -8,7 +8,6 @@ package dice
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -32,8 +31,6 @@ func ParseRoll (rollStr string) (*Roll, error) {
 		return nil, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
 	}
 
-	log.Printf("%v-%d", numSize, bonus)
-
 	var (
 		diceSize64 int64
 		numRoll64  int64
@@ -48,8 +45,6 @@ func ParseRoll (rollStr string) (*Roll, error) {
 		diceSize64, _ = strconv.ParseInt(numSize[1], 10, 32)
 		numRoll64, _ = strconv.ParseInt(numSize[0], 10, 32)
 	}
-
-	log.Printf("%d %d\n", diceSize64, numRoll64)
 
 	d := NewDice(int(diceSize64))
 	r := d.Roll(int(numRoll64))
