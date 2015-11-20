@@ -13,7 +13,7 @@ import (
 	"math/rand"
 	"strings"
 	"strconv"
-	"os"
+	"time"
 )
 
 const (
@@ -65,7 +65,7 @@ func checkBonus(sRoll string) (int, string) {
 // Throw a dice N times
 func (d *Dice) Roll (num int) *Roll {
 
-	rnd := rand.New(rand.NewSource(int64(os.Getpid())))
+	rnd := rand.New(rand.NewSource(time.Now().Unix()))
 	res := new(Roll)
 	res.Result = make([]int, num)
 
