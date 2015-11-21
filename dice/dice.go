@@ -10,10 +10,9 @@
 package dice
 
 import (
-	"math/rand"
+	"crypto/rand"
 	"strings"
 	"strconv"
-	"time"
 )
 
 const (
@@ -27,7 +26,6 @@ type Dice struct {
 
 // Create a new dice
 func NewDice (size int) (*Dice) {
-	rand.Seed(time.Now().Unix())
 	dice := new(Dice)
 	if size < 4 || size > 20 {
 		return nil
@@ -66,11 +64,17 @@ func checkBonus(sRoll string) (int, string) {
 // Throw a dice N times
 func (d *Dice) Roll (num int) *Roll {
 
+	b := make([]byte, num)
+	_, err := rand.Read(b)
+	if err != nil {
+		return 0
+	}
+
 	res := new(Roll)
 	res.Result = make([]int, num)
 
 	for i := 0; i < num; i++  {
-		res.Result[i] = rand.Intn(d.Size - 1) + 1
+		res.Result[i] = b[i] % d.Size
 		res.Sum += res.Result[i]
 	}
 	return res
