@@ -6,3 +6,5 @@ branches:
   only:
   - develop
   - master
+install:
+  - go get gopkg.in/readline.v1
