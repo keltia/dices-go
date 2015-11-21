@@ -44,16 +44,3 @@ func TestParseRoll (t *testing.T) {
 	}
 }
 
-func TestRoll (t *testing.T) {
-	d := NewDice(20)
-
-	res := d.Roll(2)
-	if len(res.Result) != 2 {
-		t.Errorf("Bad roll: %v", res.Result)
-	}
-
-	res = d.Roll(10)
-	if len(res.Result) != 10 {
-		t.Errorf("Bad roll: %v", res.Result)
-	}
-}
