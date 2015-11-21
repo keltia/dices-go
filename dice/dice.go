@@ -13,6 +13,7 @@ import (
 	"crypto/rand"
 	"strings"
 	"strconv"
+	"fmt"
 )
 
 const (
@@ -67,15 +68,17 @@ func (d *Dice) Roll (num int) *Roll {
 	b := make([]byte, num)
 	_, err := rand.Read(b)
 	if err != nil {
-		return 0
+		res := new(Roll)
+		return res
 	}
 
 	res := new(Roll)
 	res.Result = make([]int, num)
 
 	for i := 0; i < num; i++  {
-		res.Result[i] = b[i] % d.Size
+		res.Result[i] = int(b[i]) % d.Size
 		res.Sum += res.Result[i]
 	}
+	fmt.Printf("%v:%d\n", res.Result, res.Sum)
 	return res
 }
