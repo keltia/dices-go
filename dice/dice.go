@@ -76,7 +76,7 @@ func (d *Dice) Roll (num int) *Roll {
 	res.Result = make([]int, num)
 
 	for i := 0; i < num; i++  {
-		res.Result[i] = int(b[i]) % d.Size
+		res.Result[i] = (int(b[i]) % d.Size) + 1
 		res.Sum += res.Result[i]
 	}
 	fmt.Printf("%v:%d\n", res.Result, res.Sum)
