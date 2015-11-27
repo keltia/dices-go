@@ -42,16 +42,6 @@ func isValid(size int) bool {
     return false
 }
 
-// Create a new dice
-func NewDice (size int) (*Dice) {
-	dice := new(Dice)
-	if !isValid(size) {
-		return nil
-	}
-	dice.Size = size
-	return dice
-}
-
 // Check for possible bonus
 func checkBonus(sRoll string) (int, string) {
 	var (
@@ -77,6 +67,18 @@ func checkBonus(sRoll string) (int, string) {
 	}
 	diceStr = parts[0]
 	return bonus, diceStr
+}
+
+// Public interface
+
+// Create a new dice
+func NewDice (size int) (*Dice) {
+	dice := new(Dice)
+	if !isValid(size) {
+		return nil
+	}
+	dice.Size = size
+	return dice
 }
 
 // Throw a dice N times
