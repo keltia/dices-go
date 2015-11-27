@@ -21,14 +21,31 @@ const (
 	RE_BONUS = ``
 )
 
+// Valid dice sizes
+var (
+	VALID_DICES = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
+)
+
 type Dice struct {
 	Size int
+}
+
+// private func
+
+// check size
+func isValid(size int) bool {
+    for _, s := range VALID_DICES {
+        if size == s {
+	 	    return true
+		}
+    }
+    return false
 }
 
 // Create a new dice
 func NewDice (size int) (*Dice) {
 	dice := new(Dice)
-	if size < 4 || size > 20 {
+	if !isValid(size) {
 		return nil
 	}
 	dice.Size = size
