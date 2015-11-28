@@ -40,7 +40,7 @@ func ParseRoll (rollStr string) (*Roll, error) {
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
 		if !isValid(int(diceSize)) {
-			return nil, errors.New(fmt.Sprintf("Dice too small/large: %v", rollStr))
+			return nil, errors.New(fmt.Sprintf("Unknown dice: %v", rollStr))
 		}
 		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
 		if numRoll == 0 {
