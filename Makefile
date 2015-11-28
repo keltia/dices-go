@@ -4,7 +4,7 @@ VPATH= dice
 
 all: dices-go
 
-dices: dices.go dice.go roll.go
+dices-go: dices.go dice.go roll.go
 	go build -v -o dices-go
 
 clean:
