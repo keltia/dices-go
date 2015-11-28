@@ -43,3 +43,14 @@ func TestApplyBonus (t *testing.T) {
 	}
 }
 
+func TestIsValid(t *testing.T) {
+	f := isValid(1)
+	if f {
+		t.Errorf("Bad size: d%d should be false", 1)
+	}
+
+	f = isValid(100)
+	if !f {
+		t.Errorf("Bad size: d%d should be true", 100)
+	}
+}
