@@ -65,6 +65,11 @@ func TestIsValid(t *testing.T) {
 		t.Errorf("Bad size: d%d should be false", 0)
 	}
 
+	f = isValid(23)
+	if f {
+		t.Errorf("Bad size: d%d should be false", 23)
+	}
+
 	f = isValid(100)
 	if !f {
 		t.Errorf("Bad size: d%d should be true", 100)
