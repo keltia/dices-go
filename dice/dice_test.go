@@ -3,15 +3,26 @@ package dice
 import "testing"
 
 func TestNewDice (t *testing.T) {
+	var d *Dice
 
-	d := NewDice(0)
-	if d != nil {
-		t.Errorf("Can't have a dice with less than 4: %v", d)
+	validSizes := []int{ 4, 6, 8, 10, 12, 20, 100 }
+
+	// check valid ones
+	for _, size := range validSizes {
+		d = NewDice(size)
+		if d == nil {
+			t.Errorf("Valid size %d, should be non-nil", size)
+		}
 	}
 
-	d = NewDice(40)
-	if d != nil {
-		t.Errorf("Can't have dice bigger than 20: %v", d)
+	invalidSizes := []int{ 0, 40, 23 }
+
+	// check valid ones
+	for _, size := range invalidSizes {
+		d = NewDice(size)
+		if d != nil {
+			t.Errorf("Invalid size %d, should be nil %v", size, d)
+		}
 	}
 }
 
