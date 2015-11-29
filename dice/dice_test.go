@@ -54,3 +54,23 @@ func TestIsValid(t *testing.T) {
 		t.Errorf("Bad size: d%d should be true", 100)
 	}
 }
+
+func TestCheckBonus(t *testing.T) {
+	d := "3D4"
+	bonus, str := checkBonus(d)
+	if bonus != 0 {
+		t.Errorf("Bad format, bonus should be 0: %s/%d/%s", d, bonus, str)
+	}
+	if str != d {
+		t.Errorf("Bad format, %s should be eq to %s", d, str)
+	}
+
+	d = "D6 +1"
+	bonus, str = checkBonus(d)
+	if bonus != 1 {
+		t.Errorf("Bad format, bonus should be 1: %s/%d/%s", d, bonus, str)
+	}
+	if str != "D6" {
+		t.Errorf("Bad format, %s should be eq to %s w/ the bonus", str, d)
+	}
+}
