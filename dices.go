@@ -20,6 +20,12 @@ func main() {
 		if err != nil { // EOF
 			break
 		}
+
+		// For the fun
+		if str == "doom" || str == "DOOM" {
+			str = "2D6"
+		}
+
 		res, err := dice.ParseRoll(str)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
