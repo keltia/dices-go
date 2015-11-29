@@ -12,6 +12,7 @@ import (
 	"strings"
 )
 
+// roll is more complex
 type Roll struct {
 	Result []int
 	Sum    int

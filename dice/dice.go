@@ -26,6 +26,7 @@ var (
 	VALID_DICES = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
 )
 
+// Simple definition for now
 type Dice struct {
 	Size int
 }
