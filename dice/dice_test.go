@@ -31,7 +31,7 @@ func TestRoll (t *testing.T) {
 
 	res := d.Roll(2)
 	if len(res.Result) != 2 {
-		t.Errorf("Bad roll: %v", res.Result)Add t
+		t.Errorf("Bad roll: %v", res.Result)
 	}
 
 	res = d.Roll(10)
