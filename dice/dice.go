@@ -140,6 +140,9 @@ func (d *Dice) Roll (num int) *Roll {
 	if num == 1 && res.Sum == 1 {
 		res.Tag = "**FUMBLE**"
 	}
+	if num == 1 && d.Size == 20 && res.Sum == 20 {
+		res.Tag = "**Natural 20**"
+	}
 	fmt.Printf("%v:%d", res.Result, res.Sum)
 	if res.Tag != "" {
 		fmt.Printf(" (%s)\n", res.Tag)
