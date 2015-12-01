@@ -85,6 +85,13 @@ func NewDice (size int) (*Dice) {
 // Throw a dice N times
 func (d *Dice) Roll (num int) *Roll {
 
+	if num < 1 {
+		res := new(Roll)
+		res.Result = []int{}
+		res.Sum = -1
+		return res
+	}
+
 	b := make([]byte, num)
 	_, err := rand.Read(b)
 	if err != nil {
