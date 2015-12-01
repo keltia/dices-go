@@ -135,6 +135,14 @@ func (d *Dice) Roll (num int) *Roll {
 		res.Result[i] = internalRoll(d.Size)
 		res.Sum += res.Result[i]
 	}
-	fmt.Printf("%v:%d\n", res.Result, res.Sum)
+
+	// Special case
+	if num == 1 && res.Sum == 1 {
+		res.Tag = "**FUMBLE**"
+	}
+	fmt.Printf("%v:%d", res.Result, res.Sum)
+	if res.Tag != "" {
+		fmt.Printf(" (%s)\n", res.Tag)
+	}
 	return res
 }

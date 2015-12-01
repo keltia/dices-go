@@ -17,6 +17,7 @@ type Roll struct {
 	Result []int
 	Sum    int
 	Bonus  int
+	Tag    string
 }
 
 // Parse a string representing a series of rolls incl. bonus
