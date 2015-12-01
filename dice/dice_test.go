@@ -31,12 +31,17 @@ func TestRoll (t *testing.T) {
 
 	res := d.Roll(2)
 	if len(res.Result) != 2 {
-		t.Errorf("Bad roll: %v", res.Result)
+		t.Errorf("Bad roll: %v", res.Result)Add t
 	}
 
 	res = d.Roll(10)
 	if len(res.Result) != 10 {
 		t.Errorf("Bad roll: %v", res.Result)
+	}
+
+	res = d.Roll(0)
+	if len(res.Result) != 0 || res.Sum != -1 {
+		t.Errorf("Invalid roll for %d: %v", 0, res.Result)
 	}
 }
 
