@@ -111,13 +111,22 @@ func (d *Dice) Roll (num int) *Roll {
 		return res
 	}
 
-	b := make([]byte, num)
+	// Seed mrand.Seed() with these
+	b := make([]byte, SEED_SIZE)
 	_, err := rand.Read(b)
 	if err != nil {
 		res := new(Roll)
 		return res
 	}
 
+	// Now, b is 8 bytes long, generate a 64 bit value
+	acc := int64(0)
+	for _, i := range b {
+		acc = int64(acc * 16) + int64(i)
+	}
+	mrand.Seed(int64(acc))
+
+	// We should be properly seeded now
 	res := new(Roll)
 	res.Result = make([]int, num)
 
