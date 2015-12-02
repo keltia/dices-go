@@ -89,6 +89,23 @@ func internalRoll(sides int) int {
 	}
 }
 
+// "key schedule" to seed the random generator
+func keySchedule(seed int) int64 {
+
+	// Seed mrand.Seed() with these
+	b := make([]byte, seed)
+	if _, err := rand.Read(b); err != nil {
+		return -1
+	}
+
+	// Now, b is 8 bytes long, generate a 64 bit value
+	acc := int64(0)
+	for _, i := range b {
+		acc = int64(acc * 16) + int64(i)
+	}
+	return acc
+}
+
 // Public interface
 
 // Create a new dice
@@ -113,20 +130,8 @@ func (d *Dice) Roll (num int) *Roll {
 		return res
 	}
 
-	// Seed mrand.Seed() with these
-	b := make([]byte, SEED_SIZE)
-	_, err := rand.Read(b)
-	if err != nil {
-		res := new(Roll)
-		return res
-	}
-
-	// Now, b is 8 bytes long, generate a 64 bit value
-	acc := int64(0)
-	for _, i := range b {
-		acc = int64(acc * 16) + int64(i)
-	}
-	mrand.Seed(int64(acc))
+	// Seed the thing
+	mrand.Seed(keySchedule(SEED_SIZE))
 
 	// We should be properly seeded now
 	res.Result = make([]int, num)
