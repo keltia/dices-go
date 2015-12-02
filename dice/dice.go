@@ -104,8 +104,10 @@ func NewDice (size int) (*Dice) {
 // Throw a dice N times
 func (d *Dice) Roll (num int) *Roll {
 
+	res := new(Roll)
+
+	// Catch null rolls :)
 	if num < 1 {
-		res := new(Roll)
 		res.Result = []int{}
 		res.Sum = -1
 		return res
@@ -127,7 +129,6 @@ func (d *Dice) Roll (num int) *Roll {
 	mrand.Seed(int64(acc))
 
 	// We should be properly seeded now
-	res := new(Roll)
 	res.Result = make([]int, num)
 
 	// Generate real dice rolls
