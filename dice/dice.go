@@ -82,7 +82,7 @@ func (td *openDice) Roll(r Result) Result {
 }
 
 func (r Result) Merge(r1 Result) Result {
-    return Result {   append(r.List, r1.List...) , r.Sum+r1.Sum }
+    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum }
 }
 
 // Generate bounded values in a fair way
