@@ -53,7 +53,7 @@ func (set Dices) Append(d ...Dice) {
 
 // AleaJactaEst
 func (d Dices) Roll(r Result) Result {
-    var r1 Result
+    r1 := r
 
     for _,dice := range d {
         r1 = dice.Roll(r)
