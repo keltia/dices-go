@@ -70,12 +70,12 @@ func (nd *regularDice) Roll(r Result) Result {
     return r.Append(resulted_side)
 }
 
-type triggerDice struct {
+type openDice struct {
     threshold int
     d Dice
 }
 
-func (td *triggerDice) Roll(r Result) Result {
+func (td *openDice) Roll(r Result) Result {
     if r != td.threshold {
         return r
     }
