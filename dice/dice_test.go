@@ -2,24 +2,22 @@ package dice
 
 import "testing"
 
-func TestNewDice (t *testing.T) {
-	var d *Dice
+func TestNewDices (t *testing.T) {
+	var d Dices
+	var r Result
 
 	validSizes := []int{ 4, 6, 8, 10, 12, 20, 100 }
 
 	// check valid ones
 	for _, size := range validSizes {
-		d = NewDice(size)
-		if d == nil {
-			t.Errorf("Valid size %d, should be non-nil", size)
-		}
+		r = NewDices().Append(regularDice(size)).Roll(r)
 	}
 
 	invalidSizes := []int{ 0, 40, 23 }
 
 	// check valid ones
 	for _, size := range invalidSizes {
-		d = NewDice(size)
+		d = NewDices().Append(regularDice(size))
 		if d != nil {
 			t.Errorf("Invalid size %d, should be nil %v", size, d)
 		}
@@ -27,35 +25,34 @@ func TestNewDice (t *testing.T) {
 }
 
 func TestRoll (t *testing.T) {
-	d := NewDice(20)
+	var r Result
 
-	res := d.Roll(2)
-	if len(res.Result) != 2 {
-		t.Errorf("Bad roll: %v", res.Result)
+	res := NewDices().Append(regularDice(20)).Roll(r)
+
+	if len(res.List) != 2 {
+		t.Errorf("Bad roll: %v", res.Sum)
 	}
 
-	res = d.Roll(10)
-	if len(res.Result) != 10 {
-		t.Errorf("Bad roll: %v", res.Result)
+	res = NewDices().Append(regularDice(10)).Roll(r)
+	if len(res.List) != 10 {
+		t.Errorf("Bad roll: %v", res.Sum)
 	}
 
-	res = d.Roll(0)
-	if len(res.Result) != 0 || res.Sum != -1 {
-		t.Errorf("Invalid roll for %d: %v", 0, res.Result)
+	res = NewDices().Append(regularDice(0)).Roll(r)
+	if len(res.List) != 0 || res.Sum != -1 {
+		t.Errorf("Invalid roll for %d: %v", 0, res.Sum)
 	}
 }
 
 func TestApplyBonus (t *testing.T) {
-	d := NewDice(20)
+	var r Result
 
-	res := d.Roll(1)
-	sum := res.Sum
-	res.ApplyBonus(1)
-	if (sum + 1) != res.Sum {
+	r = NewDices().Append(regularDice(20)).Roll(r)
+
+	sum := r.Sum
+	//r.ApplyBonus(1)
+	if (sum + 1) != r.Sum {
 		t.Errorf("Error with bonus")
-	}
-	if (res.Bonus != 1) {
-		t.Errorf("Error with stored bonus")
 	}
 }
 
