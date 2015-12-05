@@ -40,6 +40,8 @@ type Result struct {
 
 type regularDice int
 
+type constantDice int
+
 // API
 
 func NewDices() Dices {
@@ -48,6 +50,10 @@ func NewDices() Dices {
 
 func (set Dices) Append(d ...Dice) {
 	return append(set, d...)
+}
+
+func (cd constantDice) Roll(r Result) Result {
+	return r.Append(int(cd))
 }
 
 // AleaJactaEst
