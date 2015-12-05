@@ -15,6 +15,10 @@ func main() {
 	}
 	defer rl.Close()
 
+	// Save (and reload) our history
+	rl.Config.HistoryFile = ".history"
+	rl.Operation.InitHistory()
+
 	for {
 		str, err := rl.Readline()
 		if err != nil { // EOF
