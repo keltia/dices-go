@@ -36,6 +36,7 @@ type Dices []Dice
 type Result struct {
 	List []int
 	Sum  int
+	Bonus int
 }
 
 type regularDice int
@@ -70,7 +71,7 @@ func (d Dices) Roll(r Result) Result {
 }
 
 func (r Result) Append(v int) Result {
-	return Result{append(r.List, v), r.Sum + v}
+	return Result{append(r.List, v), r.Sum + v, r.Bonus}
 }
 
 func (nd regularDice) Roll(r Result) Result {
@@ -90,7 +91,7 @@ func (td *openDice) Roll(r Result) Result {
 }
 
 func (r Result) Merge(r1 Result) Result {
-    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum }
+    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus }
 }
 
 // Generate bounded values in a fair way
