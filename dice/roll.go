@@ -62,27 +62,14 @@ func ParseRoll (rollStr string) (Result, error) {
 			return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
 	}
 
-	d := NewDice(int(diceSize))
-	r := d.Roll(int(numRoll))
-	r.ApplyBonus(bonus)
+	var dN Dices
+
+	for i := 0; i < int(numRoll) - 1; i++ {
+		r = dN.Append(allDices[diceSize]).Roll(r)
+	}
+	r = dN.Append(constantDice(bonus)).Roll(r)
 
 	return r, nil
-}
-
-// Roll dice(s)
-func NewRoll (dice Dice, num int) *Roll {
-	res := dice.Roll(num)
-	return res
-}
-
-// Return the sum of all rolls
-func (r *Roll) PrintResult() string {
-	return fmt.Sprintf("%d", r.Sum)
-}
-
-// Return all rolls
-func (r *Roll) PrintDices() string {
-	return fmt.Sprintf("%v", r.Result)
 }
 
 // Apply a bonus
