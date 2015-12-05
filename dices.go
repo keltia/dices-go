@@ -30,7 +30,7 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 		} else {
-			fmt.Printf("%s = %v (%d)\n", str, res.Result, res.Sum)
+			fmt.Printf("%s = %v (%d)\n", str, res.BareSum(), res.Sum)
 			if res.Bonus != 0 {
 				fmt.Printf(" Bonus was %d\n", res.Bonus)
 			}

@@ -12,9 +12,6 @@ package dice
 import (
 	"crypto/rand"
 	mrand "math/rand"
-	"strings"
-	"strconv"
-	"fmt"
 )
 
 const (
@@ -28,49 +25,7 @@ var (
 	VALID_DICES = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
 )
 
-// Simple definition for now
-type Dice struct {
-	Size int
-}
-
-// private func
-
-// check size
-func isValid(size int) bool {
-    for _, s := range VALID_DICES {
-        if size == s {
-	 	    return true
-		}
-    }
-    return false
-}
-
-// Check for possible bonus
-func checkBonus(sRoll string) (int, string) {
-	var (
-		bonus   int
-		diceStr string
-	)
-
-	// Look for possible bonus
-	parts := strings.Split(sRoll, " ")
-	if len(parts) == 2 {
-		if parts[1] != "" {
-			var err error
-
-			bonus64, err := strconv.ParseInt(parts[1], 10, 64)
-			if err != nil {
-				bonus = 0
-			} else {
-				bonus = int(bonus64)
-			}
-		}
-	} else {
-		bonus = 0
-	}
-	diceStr = parts[0]
-	return bonus, diceStr
-}
+// Private func
 
 // Generate bounded values in a fair way
 // Inspired by @ns_m code on IRC
@@ -87,6 +42,16 @@ func internalRoll(sides int) int {
 		}
 		i++
 	}
+}
+
+// check size
+func isValid(size int) bool {
+    for _, s := range VALID_DICES {
+        if size == s {
+	 	    return true
+		}
+    }
+    return false
 }
 
 // "key schedule" to seed the random generator
@@ -106,52 +71,92 @@ func keySchedule(seed int) int64 {
 	return acc
 }
 
-// Public interface
-
-// Create a new dice
-func NewDice (size int) (*Dice) {
-	dice := new(Dice)
-	if !isValid(size) {
-		return nil
-	}
-	dice.Size = size
-	return dice
+// Roll interface (instead of a separate type
+type Dice interface {
+	Roll(r Result) Result
 }
 
-// Throw a dice N times
-func (d *Dice) Roll (num int) *Roll {
+// A set of dices
+type Dices []Dice
 
-	res := new(Roll)
+// Result of a roll
+type Result struct {
+	List []int
+	Sum  int
+	Bonus int
+}
 
-	// Catch null rolls :)
-	if num < 1 {
-		res.Result = []int{}
-		res.Sum = -1
-		return res
-	}
+// variable dice
+type regularDice int
+
+// This is a Dice()
+func (nd regularDice) Roll(r Result) Result {
+    return r.Append(internalRoll(int(nd)))
+}
+
+// Used to represent modifiers like bonus
+type constantDice int
+
+// This is a Dice() too
+func (cd constantDice) Roll(r Result) Result {
+	return r.Append(int(cd))
+}
+
+// Open-ended dices
+type openDice struct {
+    threshold int
+    d Dice
+}
+
+// An openDice is a Dice()
+func (td *openDice) Roll(r Result) Result {
+    if r.Sum != td.threshold {
+        return r
+    }
+    return r.Merge(td.d.Roll(Result{}))
+}
+
+// API
+
+// Make a new set of rolls
+func NewDices() Dices {
+	return make([]Dice, 0, 10)
+}
+
+// That's how we do multiple rolls
+func (set Dices) Append(d ...Dice) Dices {
+	return append(set, d...)
+}
+
+// AleaJactaEst — the actual rolling
+func (d Dices) Roll(r Result) Result {
+    r1 := r
 
 	// Seed the thing
 	mrand.Seed(keySchedule(SEED_SIZE))
 
-	// We should be properly seeded now
-	res.Result = make([]int, num)
+    for _,dice := range d {
+        r1 = dice.Roll(r1)
+    }
+    return r1
+}
 
-	// Generate real dice rolls
-	for i := 0; i < num; i++  {
-		res.Result[i] = internalRoll(d.Size)
-		res.Sum += res.Result[i]
-	}
+// Add a constantDice (int) to the roll (i.e. bonus
+func (r Result) Append(v int) Result {
+	return Result{append(r.List, v), r.Sum + v, r.Bonus}
+}
 
-	// Special case
-	if num == 1 && res.Sum == 1 {
-		res.Tag = "**FUMBLE**"
+// Sum up all dices w/o bonus
+func (r Result) BareSum() int {
+	var sum int
+
+	for _, roll := range r.List {
+		sum += roll
 	}
-	if num == 1 && d.Size == 20 && res.Sum == 20 {
-		res.Tag = "**Natural 20**"
-	}
-	fmt.Printf("%v:%d", res.Result, res.Sum)
-	if res.Tag != "" {
-		fmt.Printf(" (%s)\n", res.Tag)
-	}
-	return res
+	return sum
+}
+
+// Merge everything incl. bonus
+func (r Result) Merge(r1 Result) Result {
+    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus }
 }
