@@ -20,8 +20,45 @@ type Roll struct {
 	Tag    string
 }
 
+// Check for possible bonus
+func checkBonus(sRoll string) (int, string) {
+	var (
+		bonus   int
+		diceStr string
+	)
+
+	// Look for possible bonus
+	parts := strings.Split(sRoll, " ")
+	if len(parts) == 2 {
+		if parts[1] != "" {
+			var err error
+
+			bonus64, err := strconv.ParseInt(parts[1], 10, 64)
+			if err != nil {
+				bonus = 0
+			} else {
+				bonus = int(bonus64)
+			}
+		}
+	} else {
+		bonus = 0
+	}
+	diceStr = parts[0]
+	return bonus, diceStr
+}
+
 // Parse a string representing a series of rolls incl. bonus
-func ParseRoll (rollStr string) (*Roll, error) {
+func ParseRoll (rollStr string) (Result, error) {
+	var r Result
+
+	allDices := map[int64]Dices{
+		4: NewDices().Append(regularDice(4)),
+		6: NewDices().Append(regularDice(6)),
+		8: NewDices().Append(regularDice(8)),
+		12: NewDices().Append(regularDice(12)),
+		20: NewDices().Append(regularDice(20)),
+		100: NewDices().Append(regularDice(100)),
+	}
 
 	// Normalize
 	sRoll := strings.ToUpper(rollStr)
@@ -31,7 +68,7 @@ func ParseRoll (rollStr string) (*Roll, error) {
 	// Look at possible dices
 	numSize := strings.Split(diceStr, "D")
 	if numSize == nil {
-		return nil, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+		return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
 	}
 
 	var (
@@ -42,41 +79,23 @@ func ParseRoll (rollStr string) (*Roll, error) {
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
 		if !isValid(int(diceSize)) {
-			return nil, errors.New(fmt.Sprintf("Unknown dice: %v", rollStr))
+			return r, errors.New(fmt.Sprintf("Unknown dice: %v", rollStr))
 		}
 		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
 		if numRoll == 0 {
 			numRoll = 1
 		}
 	} else {
-			return nil, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+			return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
 	}
 
-	d := NewDice(int(diceSize))
-	r := d.Roll(int(numRoll))
-	r.ApplyBonus(bonus)
+	var dN Dices
+
+	for i := 0; i <= int(numRoll) - 1; i++ {
+		r = dN.Append(allDices[diceSize]).Roll(r)
+	}
+	r = dN.Append(constantDice(bonus)).Roll(r)
+	r.Bonus = bonus
 
 	return r, nil
-}
-
-// Roll dice(s)
-func NewRoll (dice Dice, num int) *Roll {
-	res := dice.Roll(num)
-	return res
-}
-
-// Return the sum of all rolls
-func (r *Roll) PrintResult() string {
-	return fmt.Sprintf("%d", r.Sum)
-}
-
-// Return all rolls
-func (r *Roll) PrintDices() string {
-	return fmt.Sprintf("%v", r.Result)
-}
-
-// Apply a bonus
-func (r *Roll) ApplyBonus(bonus int) {
-	r.Bonus = bonus
-	r.Sum += bonus
 }
