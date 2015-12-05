@@ -21,7 +21,17 @@ type Roll struct {
 }
 
 // Parse a string representing a series of rolls incl. bonus
-func ParseRoll (rollStr string) (*Roll, error) {
+func ParseRoll (rollStr string) (Result, error) {
+	var r Result
+
+	allDices := map[int64]Dices{
+		4: NewDices().Append(regularDice(4)),
+		6: NewDices().Append(regularDice(6)),
+		8: NewDices().Append(regularDice(8)),
+		12: NewDices().Append(regularDice(12)),
+		20: NewDices().Append(regularDice(20)),
+		100: NewDices().Append(regularDice(100)),
+	}
 
 	// Normalize
 	sRoll := strings.ToUpper(rollStr)
