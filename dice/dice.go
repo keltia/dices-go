@@ -72,6 +72,15 @@ func (r Result) Append(v int) Result {
 	return Result{append(r.List, v), r.Sum + v, r.Bonus}
 }
 
+func (r Result) BareSum() int {
+	var sum int
+
+	for _, roll := range r.List {
+		sum += roll
+	}
+	return sum
+}
+
 func (nd regularDice) Roll(r Result) Result {
     return r.Append(internalRoll(int(nd)))
 }
