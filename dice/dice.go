@@ -48,7 +48,7 @@ func NewDices() Dices {
 	return make([]Dice, 0, 10)
 }
 
-func (set Dices) Append(d ...Dice) {
+func (set Dices) Append(d ...Dice) Dices {
 	return append(set, d...)
 }
 
@@ -60,17 +60,20 @@ func (cd constantDice) Roll(r Result) Result {
 func (d Dices) Roll(r Result) Result {
     r1 := r
 
+	// Seed the thing
+	mrand.Seed(keySchedule(SEED_SIZE))
+
     for _,dice := range d {
-        r1 = dice.Roll(r)
+        r1 = dice.Roll(r1)
     }
     return r1
 }
 
-func (r *Result) Append(v int) Result {
-	return Result{ append(r.List, v), r.Sum + v }
+func (r Result) Append(v int) Result {
+	return Result{append(r.List, v), r.Sum + v}
 }
 
-func (nd *regularDice) Roll(r Result) Result {
+func (nd regularDice) Roll(r Result) Result {
     return r.Append(internalRoll(int(nd)))
 }
 
