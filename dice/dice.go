@@ -12,8 +12,6 @@ package dice
 import (
 	"crypto/rand"
 	mrand "math/rand"
-	"strings"
-	"strconv"
 )
 
 const (
