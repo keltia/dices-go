@@ -13,8 +13,8 @@ func TestParseRoll (t *testing.T) {
 	if err != nil {
 		t.Errorf("Error parsing %s: %v", str, err)
 	}
-	if len(res.List) != 1 || (res.Sum < 1 || res.Sum > 20) {
-		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
+	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 20) {
+		t.Errorf("Bad string(%s): %v: %d (%v)", str, err, len(res.List), res)
 	}
 
 	str = "d20"
@@ -23,7 +23,7 @@ func TestParseRoll (t *testing.T) {
 	if err != nil {
 		t.Errorf("Error parsing %s: %v", str, err)
 	}
-	if len(res.List) != 1 || (res.Sum < 1 || res.Sum > 20) {
+	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 20) {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 	}
 
@@ -33,7 +33,7 @@ func TestParseRoll (t *testing.T) {
 	if err != nil {
 		t.Errorf("Error parsing %s: %v", str, err)
 	}
-	if len(res.List) != 3 || (res.Sum < 3 || res.Sum > 12) {
+	if len(res.List) != 4 || (res.Sum < 3 || res.Sum > 12) {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 	}
 
@@ -43,11 +43,8 @@ func TestParseRoll (t *testing.T) {
 	if err != nil {
 		t.Errorf("Error parsing %s: %v", str, err)
 	}
-//	if res.Bonus != 1 {
-//		t.Errorf("Error applying bonus(%s) %v: %d", str, err, res.Bonus)
-//	}
 
-	if len(res.List) != 1 || (res.Sum < 2 || res.Sum > 21) {
+	if len(res.List) != 2 || (res.Sum < 2 || res.Sum > 21) {
 		t.Errorf("%v: %d (%d)", err, len(res.List), res.Sum)
 	}
 
@@ -57,7 +54,7 @@ func TestParseRoll (t *testing.T) {
 	if err != nil {
 		t.Errorf("Error, should be valid: %v %v", res, err)
 	} else {
-		if len(res.List) != 1 || (res.Sum < 1 || res.Sum > 100) {
+		if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 100) {
 			t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 		}
 	}
