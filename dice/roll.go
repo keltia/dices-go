@@ -20,6 +20,33 @@ type Roll struct {
 	Tag    string
 }
 
+// Check for possible bonus
+func checkBonus(sRoll string) (int, string) {
+	var (
+		bonus   int
+		diceStr string
+	)
+
+	// Look for possible bonus
+	parts := strings.Split(sRoll, " ")
+	if len(parts) == 2 {
+		if parts[1] != "" {
+			var err error
+
+			bonus64, err := strconv.ParseInt(parts[1], 10, 64)
+			if err != nil {
+				bonus = 0
+			} else {
+				bonus = int(bonus64)
+			}
+		}
+	} else {
+		bonus = 0
+	}
+	diceStr = parts[0]
+	return bonus, diceStr
+}
+
 // Parse a string representing a series of rolls incl. bonus
 func ParseRoll (rollStr string) (Result, error) {
 	var r Result
