@@ -91,7 +91,7 @@ func ParseRoll (rollStr string) (Result, error) {
 
 	var dN Dices
 
-	for i := 0; i < int(numRoll) - 1; i++ {
+	for i := 0; i <= int(numRoll) - 1; i++ {
 		r = dN.Append(allDices[diceSize]).Roll(r)
 	}
 	r = dN.Append(constantDice(bonus)).Roll(r)
