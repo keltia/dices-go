@@ -83,7 +83,7 @@ type openDice struct {
 }
 
 func (td *openDice) Roll(r Result) Result {
-    if r != td.threshold {
+    if r.Sum != td.threshold {
         return r
     }
     return r.Merge(td.d.Roll(Result{}))
