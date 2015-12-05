@@ -74,4 +74,3 @@ func TestParseRoll (t *testing.T) {
 		t.Errorf("Bad size(%s): %v", str, err)
 	}
 }
-

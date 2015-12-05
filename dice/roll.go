@@ -95,12 +95,7 @@ func ParseRoll (rollStr string) (Result, error) {
 		r = dN.Append(allDices[diceSize]).Roll(r)
 	}
 	r = dN.Append(constantDice(bonus)).Roll(r)
+	r.Bonus = bonus
 
 	return r, nil
-}
-
-// Apply a bonus
-func (r *Roll) ApplyBonus(bonus int) {
-	r.Bonus = bonus
-	r.Sum += bonus
 }
