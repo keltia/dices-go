@@ -146,16 +146,6 @@ func (r Result) Append(v int) Result {
 	return Result{append(r.List, v), r.Sum + v, r.Bonus}
 }
 
-// Sum up all dices w/o bonus
-func (r Result) BareSum() int {
-	var sum int
-
-	for _, roll := range r.List {
-		sum += roll
-	}
-	return sum
-}
-
 // Merge everything incl. bonus
 func (r Result) Merge(r1 Result) Result {
     return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus }
