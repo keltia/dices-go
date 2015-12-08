@@ -15,6 +15,10 @@ func main() {
 	}
 	defer rl.Close()
 
+	// Save (and reload) our history
+	rl.Config.HistoryFile = ".history"
+	rl.Operation.InitHistory()
+
 	for {
 		str, err := rl.Readline()
 		if err != nil { // EOF
@@ -30,9 +34,11 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
 		} else {
-			fmt.Printf("%s = %v (%d)\n", str, res.Sum - res.Bonus, res.Sum)
+			fmt.Printf("%s = %v = %d", str, res.List, res.Sum)
 			if res.Bonus != 0 {
-				fmt.Printf(" Bonus was %d\n", res.Bonus)
+				fmt.Printf(" (%d %+d)\n", res.Sum - res.Bonus, res.Bonus)
+			} else {
+				fmt.Println()
 			}
 		}
 	}
