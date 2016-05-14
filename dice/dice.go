@@ -4,8 +4,8 @@
 // Copyright © 2015 by Ollivier Robert
 
 /*
-  package describes two new types representing dices and rolls of
-  said dices.
+Package dice escribes two new types representing dices and rolls of
+said dices.
  */
 package dice
 
@@ -15,14 +15,14 @@ import (
 )
 
 const (
-	RE_DICE = `(?P<num>\d*)[dD](?P<dice>\d+)`
-	RE_BONUS = ``
-	SEED_SIZE = 8
+	reDice  = `(?P<num>\d*)[dD](?P<dice>\d+)`
+	reBonus = ``
+	seedSize = 8
 )
 
 // Valid dice sizes
 var (
-	VALID_DICES = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
+	ValidDices = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
 )
 
 // Private func
@@ -46,7 +46,7 @@ func internalRoll(sides int) int {
 
 // check size
 func isValid(size int) bool {
-    for _, s := range VALID_DICES {
+    for _, s := range ValidDices {
         if size == s {
 	 	    return true
 		}
@@ -71,12 +71,12 @@ func keySchedule(seed int) int64 {
 	return acc
 }
 
-// Roll interface (instead of a separate type
+// Dice interface (instead of a separate type
 type Dice interface {
 	Roll(r Result) Result
 }
 
-// A set of dices
+// Dices is A set of dices
 type Dices []Dice
 
 // Result of a roll
@@ -118,30 +118,30 @@ func (td *openDice) Roll(r Result) Result {
 
 // API
 
-// Make a new set of rolls
+// NewDices makes a new set of rolls
 func NewDices() Dices {
 	return make([]Dice, 0, 10)
 }
 
-// That's how we do multiple rolls
+// Append is how we do multiple rolls
 func (set Dices) Append(d ...Dice) Dices {
 	return append(set, d...)
 }
 
-// AleaJactaEst — the actual rolling
-func (d Dices) Roll(r Result) Result {
+// Roll AleaJactaEst — the actual rolling
+func (set Dices) Roll(r Result) Result {
     r1 := r
 
 	// Seed the thing
-	mrand.Seed(keySchedule(SEED_SIZE))
+	mrand.Seed(keySchedule(seedSize))
 
-    for _,dice := range d {
+    for _,dice := range set {
         r1 = dice.Roll(r1)
     }
     return r1
 }
 
-// Add a constantDice (int) to the roll (i.e. bonus
+// Append adds a constantDice (int) to the roll (i.e. bonus
 func (r Result) Append(v int) Result {
 	return Result{append(r.List, v), r.Sum + v, r.Bonus}
 }

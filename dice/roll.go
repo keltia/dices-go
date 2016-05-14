@@ -1,18 +1,17 @@
 // roll.go
 
 /*
-  This package implements the Roll interface
+Package dice here implements the Roll interface
  */
 package dice
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 )
 
-// roll is more complex
+// Roll is more complex
 type Roll struct {
 	Result []int
 	Sum    int
@@ -20,7 +19,7 @@ type Roll struct {
 	Tag    string
 }
 
-// Check for possible bonus
+// checkBonus checks for possible bonus
 func checkBonus(sRoll string) (int, string) {
 	var (
 		bonus   int
@@ -47,7 +46,7 @@ func checkBonus(sRoll string) (int, string) {
 	return bonus, diceStr
 }
 
-// Parse a string representing a series of rolls incl. bonus
+// ParseRoll analyses a string representing a series of rolls incl. bonus
 func ParseRoll (rollStr string) (Result, error) {
 	var r Result
 
@@ -68,7 +67,7 @@ func ParseRoll (rollStr string) (Result, error) {
 	// Look at possible dices
 	numSize := strings.Split(diceStr, "D")
 	if numSize == nil {
-		return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+		return r, fmt.Errorf("Bad format: %v", rollStr)
 	}
 
 	var (
@@ -79,14 +78,14 @@ func ParseRoll (rollStr string) (Result, error) {
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
 		if !isValid(int(diceSize)) {
-			return r, errors.New(fmt.Sprintf("Unknown dice: %v", rollStr))
+			return r, fmt.Errorf("Unknown dice: %v", rollStr)
 		}
 		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
 		if numRoll == 0 {
 			numRoll = 1
 		}
 	} else {
-			return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+			return r, fmt.Errorf("Bad format: %v", rollStr)
 	}
 
 	var dN Dices
