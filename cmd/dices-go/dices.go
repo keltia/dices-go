@@ -21,7 +21,7 @@ func main() {
 
 	for {
 		str, err := rl.Readline()
-		if err != nil { // EOF
+		if err != nil || str == "q" || str == "x" { // EOF
 			break
 		}
 
