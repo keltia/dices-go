@@ -54,6 +54,7 @@ func ParseRoll (rollStr string) (Result, error) {
 		4: NewDices().Append(regularDice(4)),
 		6: NewDices().Append(regularDice(6)),
 		8: NewDices().Append(regularDice(8)),
+		10: NewDices().Append(regularDice(10)),
 		12: NewDices().Append(regularDice(12)),
 		20: NewDices().Append(regularDice(20)),
 		100: NewDices().Append(regularDice(100)),
