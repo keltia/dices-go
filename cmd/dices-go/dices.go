@@ -6,6 +6,7 @@ import (
 	readline "gopkg.in/readline.v1"
 
 	dice "github.com/keltia/dices-go/dice"
+	"strings"
 )
 
 func main() {
@@ -17,7 +18,6 @@ func main() {
 
 	// Save (and reload) our history
 	rl.Config.HistoryFile = ".history"
-	rl.Operation.InitHistory()
 
 	for {
 		str, err := rl.Readline()
@@ -25,11 +25,15 @@ func main() {
 			break
 		}
 
+		// Prepare
+		str = strings.TrimSpace(str)
+
 		// For the fun
 		if str == "doom" || str == "DOOM" {
 			str = "2D6"
 		}
 
+		// Parse the thing
 		res, err := dice.ParseRoll(str)
 		if err != nil {
 			fmt.Printf("Error: %v\n", err)
