@@ -84,6 +84,7 @@ type Result struct {
 	List []int
 	Sum  int
 	Bonus int
+	Size  int
 }
 
 // variable dice
@@ -143,10 +144,10 @@ func (set Dices) Roll(r Result) Result {
 
 // Append adds a constantDice (int) to the roll (i.e. bonus
 func (r Result) Append(v int) Result {
-	return Result{append(r.List, v), r.Sum + v, r.Bonus}
+	return Result{append(r.List, v), r.Sum + v, r.Bonus, r.Size}
 }
 
 // Merge everything incl. bonus
 func (r Result) Merge(r1 Result) Result {
-    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus }
+    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus, r.Size }
 }
