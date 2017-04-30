@@ -75,7 +75,6 @@ func ParseRoll (rollStr string) (Result, error) {
 		diceSize int64
 		numRoll int64
 	)
-
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
 		if !isValid(int(diceSize)) {
@@ -91,11 +90,12 @@ func ParseRoll (rollStr string) (Result, error) {
 
 	var dN Dices
 
+	r.Sum = 0
 	for i := 0; i <= int(numRoll) - 1; i++ {
 		r = dN.Append(allDices[diceSize]).Roll(r)
 	}
 	r = dN.Append(constantDice(bonus)).Roll(r)
 	r.Bonus = bonus
-
+	r.Size = int(diceSize)
 	return r, nil
 }
