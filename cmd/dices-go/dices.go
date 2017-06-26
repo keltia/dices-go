@@ -3,37 +3,51 @@ package main
 import (
 	"fmt"
 
-	readline "gopkg.in/readline.v1"
-
-	dice "github.com/keltia/dices-go/dice"
+	"os"
+	"github.com/abiosoft/ishell"
+	"dices-go/dice"
+	"github.com/chzyer/readline"
 )
 
-func main() {
-	rl, err := readline.New("Dices> ")
+var (
+)
+
+func finish() {
+	os.Exit(0)
+}
+
+func doom() {
+	fmt.Printf("you are doomed")
+}
+
+func roll(c *ishell.Context) {
+	if len(c.Args) == 0 {
+		fmt.Printf("error: you must specify something (nn)Ddd( +nn)")
+		return
+	}
+	res, err := dice.ParseRoll(c.Args[0])
 	if err != nil {
-		fmt.Printf("Error reading line: %v\n", err)
-	}
-	defer rl.Close()
-
-	for {
-		str, err := rl.Readline()
-		if err != nil { // EOF
-			break
-		}
-
-		// For the fun
-		if str == "doom" || str == "DOOM" {
-			str = "2D6"
-		}
-
-		res, err := dice.ParseRoll(str)
-		if err != nil {
-			fmt.Printf("Error: %v\n", err)
-		} else {
-			fmt.Printf("%s = %v (%d)\n", str, res.Sum - res.Bonus, res.Sum)
-			if res.Bonus != 0 {
-				fmt.Printf(" Bonus was %d\n", res.Bonus)
-			}
+		fmt.Printf("Error: %v\n", err)
+	} else {
+		fmt.Printf("%s = %v (%d)\n", c.Args[0], res.List, res.Sum)
+		if res.Bonus != 0 {
+			fmt.Printf(" Bonus was %d\n", res.Bonus)
 		}
 	}
+}
+
+func init() {
+}
+
+func main() {
+	c := &readline.Config{Prompt: "Dices> "}
+	shell := ishell.NewWithConfig(c)
+
+	shell.AddCmd(&ishell.Cmd{
+		Name: "dice",
+		Help: "Roll dices",
+		Func: roll,
+	})
+
+	shell.Run()
 }
