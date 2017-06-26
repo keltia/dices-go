@@ -3,14 +3,13 @@ package main
 import (
 	"fmt"
 
-	"os"
 	"github.com/abiosoft/ishell"
-	"dices-go/dice"
 	"github.com/chzyer/readline"
+	"github.com/keltia/dices-go/dice"
+	"os"
 )
 
-var (
-)
+var ()
 
 func finish() {
 	os.Exit(0)
