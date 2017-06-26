@@ -8,4 +8,4 @@ branches:
   - develop
   - master
 install:
-  - go get gopkg.in/readline.v1
+  - go get github.com/abiosoft/ishell
