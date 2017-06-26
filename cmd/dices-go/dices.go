@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"dices-go/dice"
+	"github.com/keltia/dices-go/dice"
 	"github.com/abiosoft/ishell"
 	"github.com/chzyer/readline"
 	"os"
