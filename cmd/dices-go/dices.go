@@ -3,20 +3,27 @@ package main
 import (
 	"fmt"
 
+	"github.com/keltia/dices-go/dice"
 	"github.com/abiosoft/ishell"
 	"github.com/chzyer/readline"
-	"github.com/keltia/dices-go/dice"
 	"os"
 )
-
-var ()
 
 func finish() {
 	os.Exit(0)
 }
 
-func doom() {
-	fmt.Printf("you are doomed")
+func doom(c *ishell.Context) {
+	fmt.Printf("you are doomed\n")
+	res, err := dice.ParseRoll("3D6")
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+	} else {
+		fmt.Printf("%s = %v (%d)\n", c.Args[0], res.List, res.Sum)
+		if res.Bonus != 0 {
+			fmt.Printf(" Bonus was %d\n", res.Bonus)
+		}
+	}
 }
 
 func roll(c *ishell.Context) {
@@ -35,9 +42,6 @@ func roll(c *ishell.Context) {
 	}
 }
 
-func init() {
-}
-
 func main() {
 	c := &readline.Config{Prompt: "Dices> "}
 	shell := ishell.NewWithConfig(c)
@@ -48,5 +52,10 @@ func main() {
 		Func: roll,
 	})
 
+	shell.AddCmd(&ishell.Cmd{
+		Name: "doom",
+		Help: "Dices of Doom",
+		Func: doom,
+	})
 	shell.Run()
 }
