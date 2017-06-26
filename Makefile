@@ -1,12 +1,13 @@
 # Makefile
 
 VPATH= dice:cmd/dices-go
+OPTS= -ldflags="-s -w" -v
 
 all: dices-go
 
 dices-go: dices.go dice.go roll.go
-	go build -v ./...
-	go test -v ./...
+	go build ${OPTS} ./...
+	go test ${OPTS} ./...
 
 clean:
 	go clean -v
