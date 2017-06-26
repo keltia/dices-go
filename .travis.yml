@@ -8,3 +8,9 @@ branches:
   - master
 install:
   - go get github.com/abiosoft/ishell
+matrix:
+  allow_failures:
+  - go: master
+script:
+  - go build -v ./...
+  - go test -v ./...
