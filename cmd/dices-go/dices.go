@@ -5,8 +5,7 @@ import (
 
 	"github.com/keltia/dices-go/dice"
 	"github.com/abiosoft/ishell"
-	"github.com/chzyer/readline"
-	"os"
+    "strings"
 )
 
 func doom(c *ishell.Context) {
@@ -27,7 +26,7 @@ func roll(c *ishell.Context) {
 		fmt.Printf("error: you must specify something (nn)Ddd( +nn)")
 		return
 	}
-	res, err := dice.ParseRoll(c.Args[0])
+	res, err := dice.ParseRoll(strings.TrimSpace(c.Args[0]))
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	} else {
@@ -39,8 +38,9 @@ func roll(c *ishell.Context) {
 }
 
 func main() {
-	c := &readline.Config{Prompt: "Dices> "}
-	shell := ishell.NewWithConfig(c)
+
+	shell := ishell.New()
+    shell.SetPrompt("Dices> ")
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "dice",
