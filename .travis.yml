@@ -8,6 +8,7 @@ branches:
   - master
 install:
   - go get github.com/abiosoft/ishell
+  - go get github.com/stretchr/testify/assert
 matrix:
   allow_failures:
   - go: master
