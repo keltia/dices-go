@@ -44,7 +44,7 @@ func checkBonus(sRoll string) (bonus int, diceStr string) {
 func ParseRoll (rollStr string) (Result, error) {
 	var r Result
 
-	allDices := map[int64]Dices{
+	allDices := map[int]Dices{
 		4: NewDices().Append(regularDice(4)),
 		6: NewDices().Append(regularDice(6)),
 		8: NewDices().Append(regularDice(8)),
@@ -66,16 +66,16 @@ func ParseRoll (rollStr string) (Result, error) {
 	}
 
 	var (
-		diceSize int64
-		numRoll int64
+		diceSize int
+		numRoll int
 	)
 
 	if len(numSize) == 2 {
-		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
-		if !isValid(int(diceSize)) {
+		diceSize, _ = strconv.Atoi(numSize[1])
+		if !isValid(diceSize) {
 			return r, fmt.Errorf("Unknown dice: %v", rollStr)
 		}
-		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
+		numRoll, _ = strconv.Atoi(numSize[0])
 		if numRoll == 0 {
 			numRoll = 1
 		}
