@@ -1,11 +1,11 @@
 package dice
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
-func TestParseRoll (t *testing.T) {
+func TestParseRoll(t *testing.T) {
 
 	// valid
 	str := "D20"
