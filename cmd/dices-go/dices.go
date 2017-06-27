@@ -9,10 +9,6 @@ import (
 	"os"
 )
 
-func finish() {
-	os.Exit(0)
-}
-
 func doom(c *ishell.Context) {
 	fmt.Printf("you are doomed\n")
 	res, err := dice.ParseRoll("3D6")
