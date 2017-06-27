@@ -6,7 +6,6 @@
 package dice
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -68,7 +67,7 @@ func ParseRoll (rollStr string) (Result, error) {
 	// Look at possible dices
 	numSize := strings.Split(diceStr, "D")
 	if numSize == nil {
-		return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+		return r, fmt.Errorf("Bad format: %v", rollStr)
 	}
 
 	var (
@@ -79,14 +78,14 @@ func ParseRoll (rollStr string) (Result, error) {
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
 		if !isValid(int(diceSize)) {
-			return r, errors.New(fmt.Sprintf("Unknown dice: %v", rollStr))
+			return r, fmt.Errorf("Unknown dice: %v", rollStr)
 		}
 		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
 		if numRoll == 0 {
 			numRoll = 1
 		}
 	} else {
-			return r, errors.New(fmt.Sprintf("Bad format: %v", rollStr))
+			return r, fmt.Errorf("Bad format: %v", rollStr)
 	}
 
 	var dN Dices
