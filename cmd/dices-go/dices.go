@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	DicesVersion = "1.1.1"
+	DicesVersion = "1.2"
 )
 
 func roll(c *ishell.Context, str string) {
