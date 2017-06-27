@@ -6,7 +6,7 @@
 /*
   package describes two new types representing dices and rolls of
   said dices.
- */
+*/
 package dice
 
 import (
@@ -15,14 +15,14 @@ import (
 )
 
 const (
-	RE_DICE = `(?P<num>\d*)[dD](?P<dice>\d+)`
-	RE_BONUS = ``
+	RE_DICE   = `(?P<num>\d*)[dD](?P<dice>\d+)`
+	RE_BONUS  = ``
 	SEED_SIZE = 8
 )
 
 // Valid dice sizes
 var (
-	VALID_DICES = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
+	VALID_DICES = []int{4, 6, 8, 10, 12, 20, 30, 100}
 )
 
 // Private func
@@ -37,7 +37,7 @@ func biasedCoin(p float64) bool {
 func internalRoll(sides int) int {
 	i := 0
 	for {
-		if biasedCoin(1 / float64(sides - i)) {
+		if biasedCoin(1 / float64(sides-i)) {
 			return i + 1
 		}
 		i++
@@ -46,12 +46,12 @@ func internalRoll(sides int) int {
 
 // check size
 func isValid(size int) bool {
-    for _, s := range VALID_DICES {
-        if size == s {
-	 	    return true
+	for _, s := range VALID_DICES {
+		if size == s {
+			return true
 		}
-    }
-    return false
+	}
+	return false
 }
 
 // "key schedule" to seed the random generator
@@ -66,7 +66,7 @@ func keySchedule(seed int) int64 {
 	// Now, b is 8 bytes long, generate a 64 bit value
 	acc := int64(0)
 	for _, i := range b {
-		acc = int64(acc * 16) + int64(i)
+		acc = int64(acc*16) + int64(i)
 	}
 	return acc
 }
@@ -81,8 +81,8 @@ type Dices []Dice
 
 // Result of a roll
 type Result struct {
-	List []int
-	Sum  int
+	List  []int
+	Sum   int
 	Bonus int
 }
 
@@ -91,7 +91,7 @@ type regularDice int
 
 // This is a Dice()
 func (nd regularDice) Roll(r Result) Result {
-    return r.Append(internalRoll(int(nd)))
+	return r.Append(internalRoll(int(nd)))
 }
 
 // Used to represent modifiers like bonus
@@ -104,16 +104,16 @@ func (cd constantDice) Roll(r Result) Result {
 
 // Open-ended dices
 type openDice struct {
-    threshold int
-    d Dice
+	threshold int
+	d         Dice
 }
 
 // An openDice is a Dice()
 func (td *openDice) Roll(r Result) Result {
-    if r.Sum != td.threshold {
-        return r
-    }
-    return r.Merge(td.d.Roll(Result{}))
+	if r.Sum != td.threshold {
+		return r
+	}
+	return r.Merge(td.d.Roll(Result{}))
 }
 
 // API
@@ -130,15 +130,15 @@ func (set Dices) Append(d ...Dice) Dices {
 
 // AleaJactaEst — the actual rolling
 func (d Dices) Roll(r Result) Result {
-    r1 := r
+	r1 := r
 
 	// Seed the thing
 	mrand.Seed(keySchedule(SEED_SIZE))
 
-    for _,dice := range d {
-        r1 = dice.Roll(r1)
-    }
-    return r1
+	for _, dice := range d {
+		r1 = dice.Roll(r1)
+	}
+	return r1
 }
 
 // Add a constantDice (int) to the roll (i.e. bonus
@@ -148,5 +148,5 @@ func (r Result) Append(v int) Result {
 
 // Merge everything incl. bonus
 func (r Result) Merge(r1 Result) Result {
-    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus }
+	return Result{append(r.List, r1.List...), r.Sum + r1.Sum, r.Bonus + r1.Bonus}
 }

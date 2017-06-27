@@ -1,61 +1,66 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/keltia/dices-go/dice"
 	"github.com/abiosoft/ishell"
-	"github.com/chzyer/readline"
-	"os"
+	"github.com/keltia/dices-go"
 )
 
-func finish() {
-	os.Exit(0)
-}
+const (
+	DicesVersion = "1.2"
+)
 
-func doom(c *ishell.Context) {
-	fmt.Printf("you are doomed\n")
-	res, err := dice.ParseRoll("3D6")
+func roll(c *ishell.Context, str string) {
+	res, err := dice.ParseRoll(str)
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		c.Printf("Error: %v\n", err)
 	} else {
-		fmt.Printf("%s = %v (%d)\n", c.Args[0], res.List, res.Sum)
+		c.Printf("%s = %v (%d)\n", str, res.List, res.Sum)
 		if res.Bonus != 0 {
-			fmt.Printf(" Bonus was %d\n", res.Bonus)
+			c.Printf(" Bonus was %d\n", res.Bonus)
 		}
 	}
+
 }
 
-func roll(c *ishell.Context) {
+func cmdDoom(c *ishell.Context) {
+	d := "3D6"
+
+	c.Printf("you are doomed\n")
+	roll(c, d)
+}
+
+func cmdDice(c *ishell.Context) {
 	if len(c.Args) == 0 {
-		fmt.Printf("error: you must specify something (nn)Ddd( +nn)")
+		c.Printf("error: you must specify something (nn)Ddd( +nn)\n")
 		return
 	}
-	res, err := dice.ParseRoll(c.Args[0])
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-	} else {
-		fmt.Printf("%s = %v (%d)\n", c.Args[0], res.List, res.Sum)
-		if res.Bonus != 0 {
-			fmt.Printf(" Bonus was %d\n", res.Bonus)
-		}
-	}
+	roll(c, c.Args[0])
 }
 
 func main() {
-	c := &readline.Config{Prompt: "Dices> "}
-	shell := ishell.NewWithConfig(c)
+
+	shell := ishell.New()
+	shell.Printf("Dices version %s\n", DicesVersion)
+	shell.SetPrompt("Dices> ")
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "dice",
 		Help: "Roll dices",
-		Func: roll,
+		Func: cmdDice,
 	})
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "doom",
 		Help: "Dices of Doom",
-		Func: doom,
+		Func: cmdDoom,
+	})
+
+	shell.AddCmd(&ishell.Cmd{
+		Name: "version",
+		Help: "Display version",
+		Func: func(c *ishell.Context) {
+			c.Printf("Version: %s\n", DicesVersion)
+		},
 	})
 	shell.Run()
 }
