@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/keltia/dices-go/dice"
+	"github.com/keltia/dices-go"
 	"github.com/abiosoft/ishell"
     "strings"
 )
