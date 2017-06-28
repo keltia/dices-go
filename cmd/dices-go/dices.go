@@ -23,7 +23,7 @@ func roll(c *ishell.Context, str string) {
 }
 
 func cmdDoom(c *ishell.Context) {
-	d := "3D6"
+	d := "2D6"
 
 	c.Printf("you are doomed\n")
 	roll(c, d)
