@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	DicesVersion = "1.2"
+	DicesVersion = "1.2.1"
 )
 
 func roll(c *ishell.Context, str string) {
@@ -25,7 +25,7 @@ func roll(c *ishell.Context, str string) {
 func cmdDoom(c *ishell.Context) {
 	d := "2D6"
 
-	c.Printf("you are doomed\n")
+	c.Printf("Thou art Doomed\n")
 	roll(c, d)
 }
 
