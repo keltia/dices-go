@@ -26,10 +26,10 @@ func main() {
 		}
 
 		// Prepare
-		str = strings.TrimSpace(str)
+		str = strings.TrimSpace(strings.ToLower(str))
 
 		// For the fun
-		if str == "doom" || str == "DOOM" {
+		if str == "doom" {
 			str = "2D6"
 		}
 
