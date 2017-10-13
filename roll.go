@@ -20,11 +20,7 @@ type Roll struct {
 }
 
 // checkBonus checks for possible bonus
-func checkBonus(sRoll string) (int, string) {
-	var (
-		bonus   int
-		diceStr string
-	)
+func checkBonus(sRoll string) (bonus int, diceStr string) {
 
 	// Look for possible bonus
 	parts := strings.Split(sRoll, " ")
