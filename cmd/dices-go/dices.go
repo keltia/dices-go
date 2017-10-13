@@ -42,6 +42,7 @@ func main() {
 	shell := ishell.New()
 	shell.Printf("Dices version %s\n", DicesVersion)
 	shell.SetPrompt("Dices> ")
+	shell.SetHistoryPath(".history")
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "dice",
