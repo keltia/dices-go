@@ -11,7 +11,7 @@ dices-go: dices.go dice.go roll.go
 	go test -v ./...
 
 clean:
-	go clean -v
+	go clean -v .
 
 push:
 	git push --all
