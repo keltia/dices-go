@@ -37,7 +37,7 @@ func biasedCoin(p float64) bool {
 func internalRoll(sides int) int {
 	i := 0
 	for {
-		if biasedCoin(1 / float64(sides - i)) {
+		if biasedCoin(1 / float64(sides-i)) {
 			return i + 1
 		}
 		i++
@@ -50,8 +50,8 @@ func isValid(size int) bool {
         if size == s {
 	 	    return true
 		}
-    }
-    return false
+	}
+	return false
 }
 
 // "key schedule" to seed the random generator
@@ -66,7 +66,7 @@ func keySchedule(seed int) int64 {
 	// Now, b is 8 bytes long, generate a 64 bit value
 	acc := int64(0)
 	for _, i := range b {
-		acc = int64(acc * 16) + int64(i)
+		acc = int64(acc*16) + int64(i)
 	}
 	return acc
 }
@@ -81,8 +81,8 @@ type Dices []Dice
 
 // Result of a roll
 type Result struct {
-	List []int
-	Sum  int
+	List  []int
+	Sum   int
 	Bonus int
 	Size  int
 }
@@ -92,7 +92,7 @@ type regularDice int
 
 // This is a Dice()
 func (nd regularDice) Roll(r Result) Result {
-    return r.Append(internalRoll(int(nd)))
+	return r.Append(internalRoll(int(nd)))
 }
 
 // Used to represent modifiers like bonus
@@ -105,16 +105,16 @@ func (cd constantDice) Roll(r Result) Result {
 
 // Open-ended dices
 type openDice struct {
-    threshold int
-    d Dice
+	threshold int
+	d         Dice
 }
 
 // An openDice is a Dice()
 func (td *openDice) Roll(r Result) Result {
-    if r.Sum != td.threshold {
-        return r
-    }
-    return r.Merge(td.d.Roll(Result{}))
+	if r.Sum != td.threshold {
+		return r
+	}
+	return r.Merge(td.d.Roll(Result{}))
 }
 
 // API

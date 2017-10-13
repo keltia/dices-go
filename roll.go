@@ -20,30 +20,24 @@ type Roll struct {
 }
 
 // checkBonus checks for possible bonus
-func checkBonus(sRoll string) (int, string) {
-	var (
-		bonus   int
-		diceStr string
-	)
+func checkBonus(sRoll string) (bonus int, diceStr string) {
 
 	// Look for possible bonus
 	parts := strings.Split(sRoll, " ")
 	if len(parts) == 2 {
 		if parts[1] != "" {
-			var err error
-
-			bonus64, err := strconv.ParseInt(parts[1], 10, 64)
+			b, err := strconv.Atoi(parts[1])
 			if err != nil {
 				bonus = 0
 			} else {
-				bonus = int(bonus64)
+				bonus = b
 			}
 		}
 	} else {
 		bonus = 0
 	}
 	diceStr = parts[0]
-	return bonus, diceStr
+	return
 }
 
 // ParseRoll analyses a string representing a series of rolls incl. bonus
@@ -72,15 +66,15 @@ func ParseRoll (rollStr string) (Result, error) {
 	}
 
 	var (
-		diceSize int64
-		numRoll int64
+		diceSize int
+		numRoll  int
 	)
 	if len(numSize) == 2 {
-		diceSize, _ = strconv.ParseInt(numSize[1], 10, 32)
+		diceSize, _ = strconv.Atoi(numSize[1])
 		if !isValid(int(diceSize)) {
 			return r, fmt.Errorf("Unknown dice: %v", rollStr)
 		}
-		numRoll, _ = strconv.ParseInt(numSize[0], 10, 32)
+		numRoll, _ = strconv.Atoi(numSize[0])
 		if numRoll == 0 {
 			numRoll = 1
 		}
@@ -92,7 +86,7 @@ func ParseRoll (rollStr string) (Result, error) {
 
 	r.Sum = 0
 	for i := 0; i <= int(numRoll) - 1; i++ {
-		r = dN.Append(allDices[diceSize]).Roll(r)
+		r = dN.Append(allDices[int64(diceSize)]).Roll(r)
 	}
 	r = dN.Append(constantDice(bonus)).Roll(r)
 	r.Bonus = bonus
