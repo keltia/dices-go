@@ -4,9 +4,9 @@
 // Copyright © 2015 by Ollivier Robert
 
 /*
-Package dice escribes two new types representing dices and rolls of
+Package dice describes two new types representing dices and rolls of
 said dices.
- */
+*/
 package dice
 
 import (
@@ -15,14 +15,14 @@ import (
 )
 
 const (
-	reDice  = `(?P<num>\d*)[dD](?P<dice>\d+)`
-	reBonus = ``
+	reDice   = `(?P<num>\d*)[dD](?P<dice>\d+)`
+	reBonus  = ``
 	seedSize = 8
 )
 
 // Valid dice sizes
 var (
-	ValidDices = []int{ 4, 6, 8, 10, 12, 20, 30, 100 }
+	ValidDices = []int{4, 6, 8, 10, 12, 20, 30, 100}
 )
 
 // Private func
@@ -46,9 +46,9 @@ func internalRoll(sides int) int {
 
 // check size
 func isValid(size int) bool {
-    for _, s := range ValidDices {
-        if size == s {
-	 	    return true
+	for _, s := range ValidDices {
+		if size == s {
+			return true
 		}
 	}
 	return false
@@ -131,15 +131,15 @@ func (set Dices) Append(d ...Dice) Dices {
 
 // Roll AleaJactaEst — the actual rolling
 func (set Dices) Roll(r Result) Result {
-    r1 := r
+	r1 := r
 
 	// Seed the thing
 	mrand.Seed(keySchedule(seedSize))
 
-    for _,dice := range set {
-        r1 = dice.Roll(r1)
-    }
-    return r1
+	for _, dice := range set {
+		r1 = dice.Roll(r1)
+	}
+	return r1
 }
 
 // Append adds a constantDice (int) to the roll (i.e. bonus
@@ -149,5 +149,5 @@ func (r Result) Append(v int) Result {
 
 // Merge everything incl. bonus
 func (r Result) Merge(r1 Result) Result {
-    return Result { append(r.List, r1.List...) , r.Sum+r1.Sum, r.Bonus+r1.Bonus, r.Size }
+	return Result{append(r.List, r1.List...), r.Sum + r1.Sum, r.Bonus + r1.Bonus, r.Size}
 }
