@@ -10,8 +10,8 @@ const (
 	DicesVersion = "1.2.1"
 )
 
-func roll(c *ishell.Context, strs []string) {
-	str := strings.Join(strs, " ")
+func roll(c *ishell.Context) {
+	str := strings.Join(c.Args, " ")
 	res, err := dice.ParseRoll(str)
 	if err != nil {
 		c.Printf("Error: %v\n", err)
@@ -29,7 +29,7 @@ func cmdDice(c *ishell.Context) {
 		c.Printf("error: you must specify something (nn)Ddd( +nn)\n")
 		return
 	}
-	roll(c, c.Args)
+	roll(c)
 }
 
 func main() {
@@ -49,7 +49,8 @@ func main() {
 		Name: "mouv",
 		Help: "Move dices",
 		Func: func(c *ishell.Context) {
-			roll(c, []string{"3D6", "-9"})
+			c.Args = append(c.Args, "3D6", "-9")
+			roll(c)
 		},
 	})
 
@@ -58,7 +59,8 @@ func main() {
 		Help: "Dices of Doom",
 		Func: func(c *ishell.Context) {
 			c.Printf("Thou art Doomed\n")
-			roll(c, []string{"2D6"})
+			c.Args = append(c.Args, "2D6")
+			roll(c)
 		},
 	})
 
