@@ -24,19 +24,6 @@ func roll(c *ishell.Context, strs []string) {
 
 }
 
-func cmdMouv(c *ishell.Context) {
-	d := "3D6 -9"
-
-	roll(c, []string{d})
-}
-
-func cmdDoom(c *ishell.Context) {
-	d := "2D6"
-
-	c.Printf("Thou art Doomed\n")
-	roll(c, []string{d})
-}
-
 func cmdDice(c *ishell.Context) {
 	if len(c.Args) == 0 {
 		c.Printf("error: you must specify something (nn)Ddd( +nn)\n")
@@ -61,13 +48,18 @@ func main() {
 	shell.AddCmd(&ishell.Cmd{
 		Name: "mouv",
 		Help: "Move dices",
-		Func: cmdMouv,
+		Func: func(c *ishell.Context) {
+			roll(c, []string{"3D6", "-9"})
+		},
 	})
 
 	shell.AddCmd(&ishell.Cmd{
 		Name: "doom",
 		Help: "Dices of Doom",
-		Func: cmdDoom,
+		Func: func(c *ishell.Context) {
+			c.Printf("Thou art Doomed\n")
+			roll(c, []string{"2D6"})
+		},
 	})
 
 	shell.AddCmd(&ishell.Cmd{
