@@ -3,13 +3,15 @@ package main
 import (
 	"github.com/abiosoft/ishell"
 	"github.com/keltia/dices-go"
+	"strings"
 )
 
 const (
 	DicesVersion = "1.2.1"
 )
 
-func roll(c *ishell.Context, str string) {
+func roll(c *ishell.Context, strs []string) {
+	str := strings.Join(strs, " ")
 	res, err := dice.ParseRoll(str)
 	if err != nil {
 		c.Printf("Error: %v\n", err)
@@ -22,11 +24,17 @@ func roll(c *ishell.Context, str string) {
 
 }
 
+func cmdMouv(c *ishell.Context) {
+	d := "3D6 -9"
+
+	roll(c, []string{d})
+}
+
 func cmdDoom(c *ishell.Context) {
 	d := "2D6"
 
 	c.Printf("Thou art Doomed\n")
-	roll(c, d)
+	roll(c, []string{d})
 }
 
 func cmdDice(c *ishell.Context) {
@@ -34,7 +42,7 @@ func cmdDice(c *ishell.Context) {
 		c.Printf("error: you must specify something (nn)Ddd( +nn)\n")
 		return
 	}
-	roll(c, c.Args[0])
+	roll(c, c.Args)
 }
 
 func main() {
@@ -48,6 +56,12 @@ func main() {
 		Name: "dice",
 		Help: "Roll dices",
 		Func: cmdDice,
+	})
+
+	shell.AddCmd(&ishell.Cmd{
+		Name: "mouv",
+		Help: "Move dices",
+		Func: cmdMouv,
 	})
 
 	shell.AddCmd(&ishell.Cmd{
