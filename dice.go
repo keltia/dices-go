@@ -66,7 +66,7 @@ func keySchedule(seed int) int64 {
 	// Now, b is 8 bytes long, generate a 64 bit value
 	acc := int64(0)
 	for _, i := range b {
-		acc = int64(acc*16) + int64(i)
+		acc = acc*16 + int64(i)
 	}
 	return acc
 }
