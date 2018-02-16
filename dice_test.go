@@ -1,8 +1,8 @@
 package dice
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestIsValid(t *testing.T) {
@@ -17,16 +17,4 @@ func TestIsValid(t *testing.T) {
 
 	f = isValid(100)
 	assert.True(t, f)
-}
-
-func TestCheckBonus(t *testing.T) {
-	d := "3D4"
-	bonus, str := checkBonus(d)
-	assert.EqualValues(t, 0, bonus)
-	assert.EqualValues(t, d, str)
-
-	d = "D6 +1"
-	bonus, str = checkBonus(d)
-	assert.EqualValues(t, 1, bonus)
-	assert.EqualValues(t, "D6", str)
 }

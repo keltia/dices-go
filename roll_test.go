@@ -5,8 +5,19 @@ import (
 	"testing"
 )
 
-func TestParseRoll_1(t *testing.T) {
+func TestCheckBonus(t *testing.T) {
+	d := "3D4"
+	bonus, str := checkBonus(d)
+	assert.EqualValues(t, 0, bonus)
+	assert.EqualValues(t, d, str)
 
+	d = "D6 +1"
+	bonus, str = checkBonus(d)
+	assert.EqualValues(t, 1, bonus)
+	assert.EqualValues(t, "D6", str)
+}
+
+func TestParseRoll_1(t *testing.T) {
 	// valid
 	str := "D20"
 	res, err := ParseRoll(str)
