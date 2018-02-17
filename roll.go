@@ -1,7 +1,7 @@
 // roll.go
 
 /*
-  This package implements the Roll interface
+Package dice here implements the Roll interface
 */
 package dice
 
@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-// roll is more complex
+// Roll is more complex
 type Roll struct {
 	Result []int
 	Sum    int
@@ -19,7 +19,7 @@ type Roll struct {
 	Tag    string
 }
 
-// Check for possible bonus
+// checkBonus checks for possible bonus
 func checkBonus(sRoll string) (bonus int, diceStr string) {
 
 	// Look for possible bonus
@@ -40,11 +40,11 @@ func checkBonus(sRoll string) (bonus int, diceStr string) {
 	return
 }
 
-// Parse a string representing a series of rolls incl. bonus
+// ParseRoll analyses a string representing a series of rolls incl. bonus
 func ParseRoll(rollStr string) (Result, error) {
 	var r Result
 
-	allDices := map[int]Dices{
+	allDices := map[int64]Dices{
 		4:   NewDices().Append(regularDice(4)),
 		6:   NewDices().Append(regularDice(6)),
 		8:   NewDices().Append(regularDice(8)),
@@ -69,7 +69,6 @@ func ParseRoll(rollStr string) (Result, error) {
 		diceSize int
 		numRoll  int
 	)
-
 	if len(numSize) == 2 {
 		diceSize, _ = strconv.Atoi(numSize[1])
 		if !isValid(diceSize) {
@@ -85,11 +84,12 @@ func ParseRoll(rollStr string) (Result, error) {
 
 	var dN Dices
 
-	for i := 0; i <= int(numRoll)-1; i++ {
-		r = dN.Append(allDices[diceSize]).Roll(r)
+	r.Sum = 0
+	for i := 0; i <= numRoll-1; i++ {
+		r = dN.Append(allDices[int64(diceSize)]).Roll(r)
 	}
 	r = dN.Append(constantDice(bonus)).Roll(r)
 	r.Bonus = bonus
-
+	r.Size = diceSize
 	return r, nil
 }
