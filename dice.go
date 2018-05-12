@@ -1,7 +1,7 @@
 // dice.go
 //
 // Author: Ollivier Robert <roberto@keltia.net>
-// Copyright © 2015 by Ollivier Robert
+// Copyright © 2015-2018 by Ollivier Robert
 
 /*
 Package dice describes two new types representing dices and rolls of
@@ -79,14 +79,6 @@ type Dice interface {
 // Dices is A set of dices
 type Dices []Dice
 
-// Result of a roll
-type Result struct {
-	List  []int
-	Sum   int
-	Bonus int
-	Size  int
-}
-
 // variable dice
 type regularDice int
 
@@ -142,12 +134,3 @@ func (set Dices) Roll(r Result) Result {
 	return r1
 }
 
-// Append adds a constantDice (int) to the roll (i.e. bonus
-func (r Result) Append(v int) Result {
-	return Result{append(r.List, v), r.Sum + v, r.Bonus, r.Size}
-}
-
-// Merge everything incl. bonus
-func (r Result) Merge(r1 Result) Result {
-	return Result{append(r.List, r1.List...), r.Sum + r1.Sum, r.Bonus + r1.Bonus, r.Size}
-}
