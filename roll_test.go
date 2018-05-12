@@ -5,71 +5,96 @@ import (
 	"testing"
 )
 
-func TestParseRoll(t *testing.T) {
+func TestCheckBonus(t *testing.T) {
+	d := "3D4"
+	bonus, str := checkBonus(d)
+	assert.EqualValues(t, 0, bonus)
+	assert.EqualValues(t, d, str)
 
+	d = "D6 +1"
+	bonus, str = checkBonus(d)
+	assert.EqualValues(t, 1, bonus)
+	assert.EqualValues(t, "D6", str)
+}
+
+func TestParseRoll_1(t *testing.T) {
 	// valid
 	str := "D20"
-	t.Logf("==> %s", str)
 	res, err := ParseRoll(str)
-	assert.NoError(t, err, "no error")
-
+	if err != nil {
+		t.Errorf("Error parsing %s: %v", str, err)
+	}
+	assert.EqualValues(t, 0, res.Bonus, "no bonus")
+	assert.EqualValues(t, 2, len(res.List), "should be 2")
 	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 20) {
 		t.Errorf("Bad string(%s): %v: %d (%v)", str, err, len(res.List), res)
 	}
+}
 
-	str = "d20"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
+func TestParseRoll_2(t *testing.T) {
+	str := "d20"
+	res, err := ParseRoll(str)
 	assert.NoError(t, err, "no error")
-
-	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 20) {
+	assert.EqualValues(t, 2, len(res.List))
+	if res.Sum < 1 || res.Sum > 20 {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 	}
+}
 
-	str = "d10"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
+func TestParseRoll_3(t *testing.T) {
+	str := "3d4"
+	res, err := ParseRoll(str)
 	assert.NoError(t, err, "no error")
-
-	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 10) {
+	assert.EqualValues(t, 4, len(res.List))
+	if res.Sum < 3 || res.Sum > 12 {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 	}
+}
 
-	str = "3d4"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
-	assert.NoError(t, err, "no error")
+func TestParseRoll_4(t *testing.T) {
 
-	if len(res.List) != 4 || (res.Sum < 3 || res.Sum > 12) {
-		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
-	}
-
-	str = "D20 +1"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
+	str := "D20 +1"
+	res, err := ParseRoll(str)
+	assert.EqualValues(t, 1, res.Bonus, "should be one")
+	assert.EqualValues(t, 2, len(res.List), "should be 2")
 	assert.NoError(t, err, "no error")
 
 	if len(res.List) != 2 || (res.Sum < 2 || res.Sum > 21) {
 		t.Errorf("%v: %d (%d)", err, len(res.List), res.Sum)
 	}
+}
 
-	str = "d100"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
+func TestParseRoll_5(t *testing.T) {
+	// valid
+	str := "2d10"
+	res, err := ParseRoll(str)
 	assert.NoError(t, err, "no error")
+	assert.EqualValues(t, 10, res.Size)
+	if res.Sum < 2 {
+		t.Errorf("Should be >=2: %d", res)
+	}
+	assert.EqualValues(t, 3, len(res.List))
+	assert.EqualValues(t, 0, res.Bonus, "no bonus")
+}
 
-	if len(res.List) != 2 || (res.Sum < 1 || res.Sum > 100) {
+func TestParseRoll_6(t *testing.T) {
+	str := "d100"
+	res, err := ParseRoll(str)
+	assert.NoError(t, err, "no error")
+	assert.EqualValues(t, 2, len(res.List))
+	if res.Sum < 1 || res.Sum > 100 {
 		t.Errorf("Bad string(%s): %v: %d (%d)", str, err, len(res.List), res.Sum)
 	}
+}
+
+func TestParseRoll_7(t *testing.T) {
+	// invalid
+	str := "D2"
+	_, err := ParseRoll(str)
+	assert.Error(t, err, "error")
 
 	// invalid
-	str = "D2"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
-	assert.Error(t, err, "no error")
-
 	str = "D101"
-	t.Logf("==> %s", str)
-	res, err = ParseRoll(str)
-	assert.Error(t, err, "no error")
+	_, err = ParseRoll(str)
+	assert.Error(t, err, "should be in error")
 }

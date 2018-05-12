@@ -2,47 +2,13 @@ package main
 
 import (
 	"github.com/abiosoft/ishell"
-	"github.com/keltia/dices-go"
 )
 
 const (
-	DicesVersion = "1.2.1"
+	DicesVersion = "1.2.2"
 )
 
-func roll(c *ishell.Context, str string) {
-	res, err := dice.ParseRoll(str)
-	if err != nil {
-		c.Printf("Error: %v\n", err)
-	} else {
-		c.Printf("%s = %v (%d)\n", str, res.List, res.Sum)
-		if res.Bonus != 0 {
-			c.Printf(" Bonus was %d\n", res.Bonus)
-		}
-	}
-
-}
-
-func cmdDoom(c *ishell.Context) {
-	d := "2D6"
-
-	c.Printf("Thou art Doomed\n")
-	roll(c, d)
-}
-
-func cmdDice(c *ishell.Context) {
-	if len(c.Args) == 0 {
-		c.Printf("error: you must specify something (nn)Ddd( +nn)\n")
-		return
-	}
-	roll(c, c.Args[0])
-}
-
-func main() {
-
-	shell := ishell.New()
-	shell.Printf("Dices version %s\n", DicesVersion)
-	shell.SetPrompt("Dices> ")
-
+func setupCLI(shell *ishell.Shell) {
 	shell.AddCmd(&ishell.Cmd{
 		Name: "dice",
 		Help: "Roll dices",
@@ -50,9 +16,22 @@ func main() {
 	})
 
 	shell.AddCmd(&ishell.Cmd{
+		Name: "mouv",
+		Help: "Move dices",
+		Func: func(c *ishell.Context) {
+			c.Args = append(c.Args, "3D6", "-9")
+			roll(c)
+		},
+	})
+
+	shell.AddCmd(&ishell.Cmd{
 		Name: "doom",
 		Help: "Dices of Doom",
-		Func: cmdDoom,
+		Func: func(c *ishell.Context) {
+			c.Printf("Thou art Doomed\n")
+			c.Args = append(c.Args, "2D6")
+			roll(c)
+		},
 	})
 
 	shell.AddCmd(&ishell.Cmd{
@@ -62,5 +41,16 @@ func main() {
 			c.Printf("Version: %s\n", DicesVersion)
 		},
 	})
+}
+
+func main() {
+
+	shell := ishell.New()
+	shell.Printf("Dices version %s\n", DicesVersion)
+	shell.SetPrompt("Dices> ")
+	shell.SetHistoryPath(".history")
+
+	setupCLI(shell)
+
 	shell.Run()
 }
