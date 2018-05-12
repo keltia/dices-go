@@ -23,7 +23,7 @@ func (r Result) Merge(r1 Result) Result {
 	return Result{append(r.List, r1.List...), r.Sum + r1.Sum, r.Bonus + r1.Bonus, r.Size}
 }
 
+// Natural is when you cast only dice and you get the highest value.
 func (r Result) Natural() bool {
 	return len(r.List) == 1 && r.Sum == r.Size
 }
-
