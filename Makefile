@@ -8,7 +8,7 @@ OPTS=   -ldflags="-s -w" -v
 
 all: dices-go
 
-dices-go: dices.go cmds.go dice.go roll.go
+dices-go: dices.go cmds.go dice.go result.go roll.go
 	go build ${OPTS} -v ./cmd/...
 	go test -v ./...
 
