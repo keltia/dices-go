@@ -17,7 +17,9 @@ func roll(c *ishell.Context) {
 			c.Printf(" Bonus was %d\n", res.Bonus)
 		}
 	}
-
+	if res.Natural() {
+		c.Printf("Natural %d!\n", res.Size)
+	}
 }
 
 func cmdDice(c *ishell.Context) {
