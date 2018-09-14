@@ -1,6 +1,7 @@
 # Makefile
 
-GOBIN=   ${GOPATH}/bin
+GO=		go
+GOBIN=  ${GOPATH}/bin
 
 VPATH= dice:cmd/dices-go
 
@@ -9,20 +10,20 @@ OPTS=   -ldflags="-s -w" -v
 all: dices-go
 
 dices-go: dices.go cmds.go dice.go result.go roll.go
-	go build ${OPTS} -v ./cmd/...
-	go test -v ./...
+	${GO} build ${OPTS} -v ./cmd/...
+	${GO} test -v ./...
 
 install:
-	go install ${OPTS} ./cmd/...
+	${GO} install ${OPTS} ./cmd/...
 
 clean:
-	go clean -v .
+	${GO} clean -v .
 
 push:
 	git push --all
 
 test:
-	go test -v ./...
+	${GO} test -v ./...
 
 lint:
 	gometalinter .
