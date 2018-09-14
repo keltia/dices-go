@@ -20,6 +20,7 @@ clean:
 
 push:
 	git push --all
+	git push --tags
 
 test:
 	${GO} test -v ./...
