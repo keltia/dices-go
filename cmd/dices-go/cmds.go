@@ -1,9 +1,10 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/abiosoft/ishell"
 	"github.com/keltia/dices-go"
-	"strings"
 )
 
 func roll(c *ishell.Context) {
