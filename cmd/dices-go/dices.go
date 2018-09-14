@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	DicesVersion = "1.3.0"
+	DicesVersion = "1.3.1"
 )
 
 func setupCLI(shell *ishell.Shell) {
