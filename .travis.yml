@@ -6,12 +6,11 @@ branches:
   only:
   - develop
   - master
-install:
-  - go get github.com/abiosoft/ishell
-  - go get github.com/stretchr/testify/assert
 matrix:
   allow_failures:
   - go: master
+env:
+  - GO111MODULE=on
 script:
   - go build -v ./...
   - go test -v ./...
