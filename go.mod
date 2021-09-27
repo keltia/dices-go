@@ -1,9 +1,11 @@
 module github.com/keltia/dices-go
 
+go 1.17
+
 require (
-	github.com/abiosoft/ishell v0.0.0-20180410190938-49cf7364b571
+	github.com/abiosoft/ishell v2.0.0+incompatible
+	github.com/abiosoft/readline v0.0.0-20180607040430-155bce2042db // indirect
 	github.com/chzyer/logex v1.1.10 // indirect
-	github.com/chzyer/readline v0.0.0-20171208011716-f6d7a1f6fbf3 // indirect
 	github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.6.0 // indirect
