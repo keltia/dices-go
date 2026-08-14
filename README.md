@@ -1,5 +1,7 @@
 # Dice simulator
 
+NOTE: this project is archived, please use the much better and advanced [Rust version](https://github.com/keltia/dices-rs)
+
 ## Description
 
 Usual small Dice simulator for AD&D type of games.
